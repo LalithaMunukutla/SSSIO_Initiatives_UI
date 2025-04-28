@@ -1,0 +1,39 @@
+Home.css */
+
+/* Header Button (View Dashboard) */
+.dashboard-btn {
+  background-color: white;
+  color: #003366;
+  border: none;
+  text-align: right;
+  padding: 10px 20px;
+  position: relative; 
+}
+
+.dashboard-btn:hover {
+  background-color: #eaeaea;
+}
+
+/* UserHome Options Section */
+.userhome-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.userhome-btn {
+  width: 250px;
+  padding: 15px;
+  background-color: #f0f0f0;
+  color: #003366;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.userhome-btn:hover {
+  background-color: #eaeaea;
+}

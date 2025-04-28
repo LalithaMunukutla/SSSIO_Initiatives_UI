@@ -1,0 +1,124 @@
+/* Container Styling */
+.view-submitted-forms-container {
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  background: #f5f7fa;
+}
+
+
+.content {
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* No Forms Message */
+.no-forms-message {
+  font-size: 18px;
+  color: #555;
+  margin-top: 32px;
+  text-align: center;
+}
+
+/* AG Grid Customization */
+.ag-grid-custom {
+  width: 100vw;
+  min-width: 100vw;
+  margin: 0 auto;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background: #fff;
+  padding-bottom: 20px;
+  overflow-x: auto;
+}
+
+.ag-theme-alpine {
+  --ag-header-background-color: #336699  !important;
+  --ag-header-foreground-color: #fff !important;
+  --ag-header-cell-hover-background-color: #1565c0;
+  --ag-row-hover-color: #e3f2fd;
+  --ag-odd-row-background-color: #f5f7fa;
+  --ag-border-radius: 0 0 12px 12px;
+  --ag-font-size: 1em;
+  --ag-header-height: 48px;
+  --ag-header-cell-horizontal-padding: 16px;
+  --ag-header-cell-vertical-padding: 8px;
+}
+
+.ag-theme-alpine .ag-header {
+  background-color: #1976d2 !important;
+  color: #fff !important;
+  font-size: 1.08em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #1565c0;
+}
+
+.ag-theme-alpine .ag-header-cell, 
+.ag-theme-alpine .ag-header-group-cell {
+  background-color: #1976d2 !important;
+  color: #fff !important;
+}
+
+.ag-theme-alpine .ag-row {
+  font-size: 1em;
+  min-height: 48px; /* Ensures minimum row height */
+}
+
+.ag-theme-alpine .ag-row-hover {
+  background-color: #e3f2fd !important;
+}
+
+.ag-theme-alpine .ag-cell {
+  padding: 10px 8px;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* View Form Button */
+.view-form-btn {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.2s;
+}
+.view-form-btn:hover {
+  background-color: #1565c0;
+}
+
+/* Delete Icon Button */
+.delete-form-icon-btn {
+  background: none;
+  border: none;
+  color: #c0392b;
+  font-size: 1.3em;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: color 0.2s;
+  vertical-align: middle;
+}
+.delete-form-icon-btn:hover {
+  color: #a93226;
+}
+
+/* Responsive AG Grid */
+@media (max-width: 900px) {
+  .ag-grid-custom {
+    width: 100vw;
+    min-width: 100vw;
+    padding: 0;
+    border-radius: 0;
+  }
+  .content {
+    width: 100vw;
+    padding: 0;
+  }
+}
