@@ -13,27 +13,27 @@ export const ConstantsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchConstants = async () => {
-      try {
-        const response = await fetch("/api/constants");
-        if (!response.ok) {
-          throw new Error("Failed to fetch constants");
-        }
-        const data = await response.json();
-        setConstants(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
 
+  const fetchConstants = async () => {
+    try {
+      const response = await fetch("/api/constants");
+      if (!response.ok) {
+        throw new Error("Failed to fetch constants");
+      }
+      const data = await response.json();
+      setConstants(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchConstants();
   }, []);
 
   return (
-    <ConstantsContext.Provider value={{ constants, loading, error }}>
+    <ConstantsContext.Provider value={{ constants, loading, error, refreshConstants: fetchConstants }}>
       {children}
     </ConstantsContext.Provider>
   );

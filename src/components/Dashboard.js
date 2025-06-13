@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/Home.css"; // Reuse the same CSS for the header
 import "../styles/Dashboard.css"; // Create a new CSS file for this page
 import { ConstantsContext } from "./ConstantsContext";
+import Header from "./Header"; // <-- Import your header component
 
 const Dashboard = () => {
     const { constants} = useContext(ConstantsContext);
@@ -52,21 +53,20 @@ const Dashboard = () => {
   }, [filters]);
 
   return (
+    <>
+    {/* <div className="background-blur"></div> */}
     <div className="dashboard-container">
       {/* Header Section */}
-      <header className="header">
-        <h1 className="title">SSSIO SAI 100 Initiatives Journal</h1>
-        <div className="auth-links">
-        <Link to="/view-submitted-forms" className="auth-btn">
+      <Header>
+      <Link to="/view-submitted-forms" className="auth-btn">
             View my submissions
           </Link>
           &nbsp;|&nbsp;
           <Link to="/login" className="auth-btn">
             Log out
           </Link>
-        </div>
-      </header>
-
+      </Header>
+      
       {/* Filter Section */}
       <div className="filter-section">
         {/* <h2>Filter Options</h2> */}
@@ -177,6 +177,7 @@ const Dashboard = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

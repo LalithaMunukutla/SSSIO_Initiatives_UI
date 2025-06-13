@@ -1,0 +1,43 @@
+.side-panel-list,
+.side-panel-list ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.side-panel-list li {
+  list-style: none !important;
+  padding: 16px 24px;
+  cursor: pointer;
+  font-size: 1.1em;
+  border-bottom: 1px solid #224477;
+  transition: background 0.2s;
+  text-align: left;
+  display: block;
+}
+.side-panel-list li.active,
+.side-panel-list li:hover {
+  background: #00509e;
+  font-weight: bold;
+  color: #fff;
+}
+
+.side-panel-toggle {
+  position: absolute;
+  top: 10px;
+  right: -14px;
+  width: 28px;
+  height: 28px;
+  background: #003366;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 1em;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 1px 1px 6px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}

@@ -1,28 +1,44 @@
 /* Home Page Styling */
 .home-container {
+    position: relative;
     display: flex;
+    width: 100%;
     flex-direction: column;
-    align-items: center;
-    background-color: #f4f4f4;
+    background: transparent;
     height: 100vh;
   }
   
   /* Header Styling */
   .header {
+  width: 100vw;              /* Ensures header spans the full viewport width */
+  max-width: 100vw;          /* Prevents overflow on large screens */
+  box-sizing: border-box;    /* Includes padding in width calculation */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;        /* Ensures stacking context */
+  left: 0;
+}
+  
+  .header-left {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: #003366;
-    color: white;
-    padding: 20px;
-    width: 100%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-logo {
+    height: 70px; /* Increase as needed */
+    width: auto;
+    margin-right: 24px;
   }
   
   .title {
-    font-size: 24px;
+    font-size: 2rem;
     font-weight: bold;
-    margin-left: 20px;
+    color: #003366;
+    margin: 0;
   }
   
   .auth-links {
@@ -30,7 +46,7 @@
   }
   
   .auth-btn {
-    color: white;
+    color: #003366;
     text-decoration: none;
     margin: 0 10px;
     font-weight: bold;
@@ -40,35 +56,91 @@
   .auth-btn:hover {
     text-decoration: underline;
   }
+
+  /* .home-bg-blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../assests/satya-sai.jpeg') center center/cover no-repeat;
+  filter: blur(8px) brightness(0.7);
+  z-index: 0;
+  pointer-events: none;
+} */
+
+.home-bg-blur {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../assests/satya-sai.jpeg') no-repeat center center/cover; /* Correct path */
+    filter: blur(5px); /* Adjust the blur intensity */
+    z-index: -1; /* Place the background behind the content */
+  }
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  position: relative;
+}
+.home-centered-text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #fff;
+  padding: 0 10vw;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 12px;
+}
   
   /* Content Layout */
   .content {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    width: 80%;
-    margin-top: 50px;
+    flex-direction: row;
+    width: 100vw;
+    min-height: 60vh;
   }
   
-  /* Image Section (Left Side) */
+  /* Image Section */
   .image-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 60vw;
+     height: 60vh; 
+  overflow: hidden;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
   }
   
   .custom-img {
-    max-width: 200px;
-    border-radius: 10px;
-    margin-bottom: 20px; /* Space between the two images */
+    width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
   }
   
-  /* Text Section (Right Side) */
+  /* Text Section */
   .text-section {
-    flex: 2;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    font-size: 18px;
-    padding: 20px;
+  font-size: 1rem;
+  color: #e67e17;
+  font-weight: bold;
+  margin: 0;
+  padding: 24px 0 0 0;
+  background: #f4f4f4;
   }
   

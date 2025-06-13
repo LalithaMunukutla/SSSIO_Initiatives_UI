@@ -8,6 +8,7 @@ import ViewSubmittedForms from "./components/ViewSubmittedForms";
 import Dashboard from "./components/Dashboard";
 import SubmitForm from "./components/SubmitForm";
 import { ConstantsProvider } from "./components/ConstantsContext";
+import AdminPage from "./components/AdminPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/view-submitted-forms" element={<ViewSubmittedForms />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/submit-form" element={<SubmitForm />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/view-form/:responseId" element={<div>View Form Page</div>} />
       </Routes>
     </Router>
