@@ -265,8 +265,18 @@ const AdminPage = () => {
         quesTypeId: q.questionType,
         analyticsNeeded: q.analyticsNeeded,
         status: "ACTIVE",
-        options: q.options || []
-      })) || [];
+        options: Array.isArray(q.options)
+        ? q.options.map(opt =>
+            typeof opt === "string"
+              ? opt
+              : (opt && typeof opt === "object" && opt.description)
+                ? opt.description
+                : ""
+          )
+        : typeof q.options === "string" && q.options
+          ? q.options.split(",").map(opt => opt.trim())
+          : []
+    })) || [];
     setEditQuestions(activityQuestions);
     setDeletedQuestions([]);
   };
@@ -429,9 +439,19 @@ const AdminPage = () => {
   // Update a question in the list (for edit)
   const handleEditQuestionChange = (idx, field, value) => {
     setEditQuestions(editQuestions =>
-      editQuestions.map((q, i) =>
-        i === idx ? { ...q, [field]: field === "quesTypeId" ? Number(value) : value } : q
-      )
+      editQuestions.map((q, i) => {
+        if (i !== idx) return q;
+        let updated = { ...q, [field]: field === "quesTypeId" ? Number(value) : value };
+        // If changing type to MCQ/MultiSelect, ensure options is an array
+        if (field === "quesTypeId") {
+          if (["2", "3"].includes(String(value))) {
+            if (!Array.isArray(updated.options)) updated.options = [""];
+          } else {
+            updated.options = [];
+          }
+        }
+        return updated;
+      })
     );
   };
 
@@ -643,10 +663,10 @@ const AdminPage = () => {
                             onChange={e => handleQuestionChange(idx, "quesDescription", e.target.value)}
                             style={{
                               padding: 8,
-                              flex: 1,
-                              minWidth: 0,
-                              resize: "vertical",
-                              maxHeight: 200
+                              flex: 2,           // Make this input take more space
+                              minWidth: 400,     // Set a reasonable minimum width
+                              width: "100%",     // Allow it to grow
+                              boxSizing: "border-box"
                             }}
                           />
                           <select
@@ -708,7 +728,7 @@ const AdminPage = () => {
                                   style={{
                                     padding: 6,
                                     flex: 1,
-                                    minWidth: 0,
+                                    minWidth: 400,
                                     width: "100%",
                                     boxSizing: "border-box"
                                   }}
@@ -854,142 +874,143 @@ const AdminPage = () => {
                   {editQuestions.length > 0 && (
                     <div style={{ marginBottom: 16, width: "100%" }}>
                       <ul style={{ listStyle: "none", padding: 0, width: "100%" }}>
-  {editQuestions.map((q, idx) => (
-    <li
-      key={q.quesId || idx}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        marginBottom: 6,
-        width: "100%",
-        flexWrap: "nowrap"
-      }}
-    >
-      <input
-        type="text"
-        placeholder="Question Description"
-        value={q.quesDescription}
-        onChange={e => handleEditQuestionChange(idx, "quesDescription", e.target.value)}
-        style={{
-          display: "flex",
-          padding: 8,
-          minWidth: 0,
-          flex: 1
-        }}
-      />
-      <select
-        value={q.quesTypeId}
-        onChange={e => handleEditQuestionChange(idx, "quesTypeId", e.target.value)}
-        style={{
-          padding: 8,
-          width: 180,
-          minWidth: 140,
-          maxWidth: 200,
-          flex: "0 0 180px"
-        }}
-      >
-        <option value="">Type</option>
-        {constants.questionTypes?.map(type => (
-          <option key={type.id} value={type.id}>
-            {QuestionTypeEnum[type.type] || type.type}
-          </option>
-        ))}
-      </select>
-      <label style={{
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        minWidth: 140,
-        margin: 0
-      }}>
-        <input
-          type="checkbox"
-          checked={q.analyticsNeeded}
-          onChange={e => handleEditAnalyticsNeededChange(idx, e.target.checked)}
-          style={{ marginRight: 2 }}
-        />
-        Analytics
-      </label>
-      <button
-        type="button"
-        onClick={() => handleRemoveEditQuestion(idx)}
-        style={{
-          background: "transparent",
-          color: "#e74c3c",
-          border: "none",
-          borderRadius: 4,
-          padding: "2px 10px",
-          cursor: "pointer",
-          fontSize: 18,
-          display: "flex",
-          alignItems: "center"
-        }}
-        title="Remove"
-      >
-        &#128465;
-      </button>
-    </li>
-  ))}
-</ul>
-{/* Render options blocks below the question list */}
-{editQuestions.map((q, idx) =>
-  ["2", "3"].includes(String(q.quesTypeId)) && (
-    <div key={`options-${q.quesId || idx}`} style={{ width: "100%", marginBottom: 6 }}>
-      {(q.options || []).map((opt, optIdx) => (
-        <div key={optIdx} style={{ display: "flex", alignItems: "center", gap: 4, width: "100%" }}>
-          <input
-            type="text"
-            placeholder={`Option ${optIdx + 1}`}
-            value={opt}
-            onChange={e => handleEditOptionChange(idx, optIdx, e.target.value)}
-            style={{
-              padding: 6,
-              flex: 1,
-              minWidth: 0,
-              width: "100%",
-              boxSizing: "border-box"
-            }}
-          />
-          <button
-            type="button"
-            onClick={() => handleRemoveEditOption(idx, optIdx)}
-            style={{
-              background: "transparent",
-              color: "#e74c3c",
-              border: "none",
-              borderRadius: 4,
-              padding: "2px 8px",
-              cursor: "pointer",
-              fontSize: 16
-            }}
-            title="Remove Option"
-          >
-            &times;
-          </button>
-        </div>
-      ))}
-      <button
-        type="button"
-        onClick={() => handleAddEditOption(idx)}
-        style={{
-          background: "#fff",
-          color: "#003366",
-          border: "1px solid #003366",
-          borderRadius: 4,
-          padding: "2px 8px",
-          fontWeight: "bold",
-          cursor: "pointer",
-          fontSize: 13,
-          marginTop: 2,
-          alignSelf: "flex-start"
-        }}
-      >
-        + Add Option
-      </button>
-    </div>
-  )
-)}
+                        {editQuestions.map((q, idx) => (
+                          <li
+                            key={q.quesId || idx}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 12,
+                              marginBottom: 6,
+                              width: "100%",
+                              flexWrap: "nowrap"
+                            }}
+                          >
+                            <input
+                              type="text"
+                              placeholder="Question Description"
+                              value={q.quesDescription}
+                              onChange={e => handleEditQuestionChange(idx, "quesDescription", e.target.value)}
+                              style={{
+                                padding: 8,
+                                flex: 2,
+                                minWidth: 400,
+                                width: "100%",
+                                boxSizing: "border-box"
+                              }}
+                            />
+                            <select
+                              value={q.quesTypeId}
+                              onChange={e => handleEditQuestionChange(idx, "quesTypeId", e.target.value)}
+                              style={{
+                                padding: 8,
+                                width: 180,
+                                minWidth: 140,
+                                maxWidth: 200,
+                                flex: "0 0 180px"
+                              }}
+                            >
+                              <option value="">Type</option>
+                              {constants.questionTypes?.map(type => (
+                                <option key={type.id} value={type.id}>
+                                  {QuestionTypeEnum[type.type] || type.type}
+                                </option>
+                              ))}
+                            </select>
+                            <label style={{
+                              flex: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              minWidth: 140,
+                              margin: 0
+                            }}>
+                              <input
+                                type="checkbox"
+                                checked={q.analyticsNeeded}
+                                onChange={e => handleEditAnalyticsNeededChange(idx, e.target.checked)}
+                                style={{ marginRight: 2 }}
+                              />
+                              Analytics
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveEditQuestion(idx)}
+                              style={{
+                                background: "transparent",
+                                color: "#e74c3c",
+                                border: "none",
+                                borderRadius: 4,
+                                padding: "2px 10px",
+                                cursor: "pointer",
+                                fontSize: 18,
+                                display: "flex",
+                                alignItems: "center"
+                              }}
+                              title="Remove"
+                            >
+                              &#128465;
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                      {/* Render options blocks below the question list */}
+                      {editQuestions.map((q, idx) =>
+                        ["2", "3"].includes(String(q.quesTypeId)) && (
+                          <div key={`options-${q.quesId || idx}`} style={{ width: "100%", marginBottom: 6 }}>
+                            {(q.options || []).map((opt, optIdx) => (
+                              <div key={optIdx} style={{ display: "flex", alignItems: "center", gap: 4, width: "100%" }}>
+                                <input
+                                  type="text"
+                                  placeholder={`Option ${optIdx + 1}`}
+                                  value={opt}
+                                  onChange={e => handleEditOptionChange(idx, optIdx, e.target.value)}
+                                  style={{
+                                    padding: 6,
+                                    flex: 1,
+                                    minWidth: 400,
+                                    width: "100%",
+                                    boxSizing: "border-box"
+                                  }}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveEditOption(idx, optIdx)}
+                                  style={{
+                                    background: "transparent",
+                                    color: "#e74c3c",
+                                    border: "none",
+                                    borderRadius: 4,
+                                    padding: "2px 8px",
+                                    cursor: "pointer",
+                                    fontSize: 16
+                                  }}
+                                  title="Remove Option"
+                                >
+                                  &times;
+                                </button>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => handleAddEditOption(idx)}
+                              style={{
+                                background: "#fff",
+                                color: "#003366",
+                                border: "1px solid #003366",
+                                borderRadius: 4,
+                                padding: "2px 8px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                                fontSize: 13,
+                                marginTop: 2,
+                                alignSelf: "flex-start"
+                              }}
+                            >
+                              + Add Option
+                            </button>
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                   <button
